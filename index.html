@@ -4,7 +4,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Custom Seek Bar</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    #seekBarContainer {
+      width: 80%;
+      margin: 20px auto;
+      display: flex;
+      align-items: center;
+    }
+
+    #seekBar {
+      width: 100%;
+      margin-right: 10px;
+    }
+
+    #currentTime, #totalDuration {
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+    }
+  </style>
 </head>
 <body>
   <div id="seekBarContainer">
@@ -12,6 +29,34 @@
     <span id="currentTime">0:00</span> / <span id="totalDuration">0:00</span>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    var player = GetPlayer();
+    var slideDuration = player.GetVar("SlideDuration") || 120; // Default 120 seconds if variable not found
+
+    document.getElementById('seekBar').max = slideDuration;
+    document.getElementById('totalDuration').innerText = formatTime(slideDuration);
+
+    let currentTime = 0;
+    let interval = setInterval(() => {
+      if (currentTime <= slideDuration) {
+        document.getElementById('seekBar').value = currentTime;
+        document.getElementById('currentTime').innerText = formatTime(currentTime);
+        currentTime++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 1000);
+
+    function formatTime(seconds) {
+      let mins = Math.floor(seconds / 60);
+      let secs = seconds % 60;
+      return ${mins}:${secs < 10 ? '0' : ''}${secs};
+    }
+
+    document.getElementById('seekBar').addEventListener('input', function() {
+      currentTime = parseInt(this.value);
+      document.getElementById('currentTime').innerText = formatTime(currentTime);
+    });
+  </script>
 </body>
 </html>
