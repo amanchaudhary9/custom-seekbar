@@ -1,0 +1,16 @@
+#seekBarContainer {
+  width: 80%;
+  margin: 20px auto;
+  display: flex;
+  align-items: center;
+}
+
+#seekBar {
+  width: 100%;
+  margin-right: 10px;
+}
+
+#currentTime, #totalDuration {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
